@@ -123,6 +123,10 @@ public class DishServiceImpl implements DishService {
     @Override
     public DishVO findDishById(Integer id) {
         DishVO dishVO=dishMapper.selectDishAndFlavorById(id);
+        List<DishFlavor> flavors=dishFlavorsMapper.selectByDishId(dishVO.getId());
+        log.info(flavors.toString());
+        dishVO.setFlavors(flavors);
+        log.info(dishVO.toString());
         return dishVO;
     }
 
