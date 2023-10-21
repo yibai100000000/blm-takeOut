@@ -5,10 +5,11 @@
 <!--    useGeneratedKeys指需要获取插入后生成的主键值-->
 <!--    keyProperty指或取之后的值自动注入到传进来的对象中-->
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        insert into dish (name,category_id,price,image,description,status)
+        insert into dish (name,category_id,price,image,description,status, create_time, update_time, create_user, update_user)
         values
-        (#{name},#{categoryId},#{price},#{image},#{description},#{status})
+        (#{name},#{categoryId},#{price},#{image},#{description},#{status}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser})
     </insert>
+
 
     <delete id="deleteByIds">
         delete from dish where id in
@@ -36,5 +37,32 @@
         </where>
         order by d.update_time desc
     </select>
+    <select id="selectDishAndFlavorById" resultType="com.sky.vo.DishVO">
+        select d.id, d.category_id, d.name, d.price,  d.status, d.description,
+               d.image,  d.update_time, c.name as category_name, df.value as flavors
+        from dish d left outer join category c
+                                    on d.category_id=c.id
+                    left outer join  dish_flavor df on d.id = df.dish_id
+        where d.id=#{id}
+    </select>
+
+    <update id="update">
+        update dish
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="image != null">image = #{image},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="updateUser != null">
+                update_user = #{updateUser}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
 
 </mapper>

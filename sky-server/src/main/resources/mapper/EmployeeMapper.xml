@@ -25,8 +25,12 @@
             <if test="sex!=null and sex!=''" > sex=#{sex},</if>
             <if test="idNumber!=null and idNumber!=''"> id_number=#{idNumber},</if>
             <if test="status!=null"> status=#{status},</if>
-            <if test="updateTime!=null"> update_time=#{updateTime},</if>
-            <if test="updateUser!=null"> update_user=#{updateUser},</if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="updateUser != null">
+                update_user = #{updateUser}
+            </if>
         </set>
         where id=#{id}
     </update>

@@ -6,6 +6,7 @@ import com.sky.dto.DishPageQueryDTO;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.DishService;
+import com.sky.vo.DishVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +38,7 @@ public class DishController {
 
     @GetMapping("/page")
     @ApiOperation("菜品分页查询")
-    //因为是get方式所以直接放入参数就能从URL读取数据并封装
+    //因为是get方式所以直接放入参数就能从URL读取数据并封装,不用@RequestBody因为它是处理json参数的
     public Result<PageResult> page(DishPageQueryDTO dishPageQueryDTO){
         log.info("进行菜品分页查询:{}",dishPageQueryDTO);
         PageResult pageResult=dishService.pageQuery(dishPageQueryDTO);
@@ -49,6 +50,22 @@ public class DishController {
     public Result delete(@RequestParam List<Long> ids){
         log.info("菜品删除{}",ids);
         dishService.deleteBatch(ids);
+        return Result.success();
+    }
+
+    @GetMapping("/{id}")
+    @ApiOperation("根据ID查询菜品与口味")
+    public Result<DishVO> findDishById(@PathVariable Integer id){
+        log.info("id为{}",id);
+        DishVO dishVO=dishService.findDishById(id);
+        return Result.success(dishVO);
+    }
+
+    @PutMapping
+    @ApiOperation("修改菜品")
+    public Result updateDish(@RequestBody DishDTO dishDTO){
+        log.info("修改的菜品为：{}",dishDTO);
+        dishService.updateDish(dishDTO);
         return Result.success();
     }
 
