@@ -29,7 +29,7 @@ public class CommonController {
     private AliOssUtil aliOssUtil;
 
     /**
-     * 文件上床
+     * 文件上传
      * @param file
      * @return
      */
