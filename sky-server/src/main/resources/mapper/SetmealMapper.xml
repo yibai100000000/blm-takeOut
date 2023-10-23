@@ -16,4 +16,25 @@
             (#{dish.setmealId},#{dish.dishId},#{dish.name},#{dish.price},#{dish.copies})
         </foreach>
     </insert>
+
+    <select id="pageQuery" resultType="com.sky.vo.SetmealVO">
+        select s.id,s.category_id,s.name as name,s.price,
+               s.status,s.description,s.image,
+               s.update_time,c.name as category_name
+        from setmeal s,category c
+        <where>
+            s.category_id=c.id
+            <if test="name!=null and name!=''">
+                and s.name like concat('%'+#{name}+'%')
+            </if>
+            <if test="categoryId!=null">
+                and c.category_id = #{categoryId}
+            </if>
+            <if test="status!=null">
+                and s.status = #{status}
+            </if>
+        </where>
+        order by s.update_time desc
+
+    </select>
 </mapper>
