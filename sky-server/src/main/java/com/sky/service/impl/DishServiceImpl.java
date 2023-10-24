@@ -8,6 +8,7 @@ import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
+import com.sky.exception.BaseException;
 import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.DishFlavorsMapper;
 import com.sky.mapper.DishMapper;
@@ -123,6 +124,9 @@ public class DishServiceImpl implements DishService {
     @Override
     public DishVO findDishById(Integer id) {
         DishVO dishVO=dishMapper.selectDishAndFlavorById(id);
+        if(dishVO==null){
+            throw new BaseException("id不存在");
+        }
         List<DishFlavor> flavors=dishFlavorsMapper.selectByDishId(dishVO.getId());
         log.info(flavors.toString());
         dishVO.setFlavors(flavors);
@@ -131,6 +135,10 @@ public class DishServiceImpl implements DishService {
     }
 
 
+    /**
+     * 修改菜品
+     * @param dishDTO
+     */
     @Override
     public void updateDish(DishDTO dishDTO) {
         //可以使用dish对象来修改基本信息
@@ -156,11 +164,28 @@ public class DishServiceImpl implements DishService {
     }
 
 
+    /**
+     * 修改菜品起售状态
+     * @param status
+     * @param id
+     */
     @Override
     public void updateStatus(Integer status, Long id) {
         Dish dish=new Dish();
         dish.setStatus(status);
         dish.setId(id);
         dishMapper.update(dish);
+    }
+
+
+    /**
+     * 根据分类ID查询菜品
+     * @param dishPageQueryDTO
+     * @return
+     */
+    @Override
+    public List<Dish> findDishByCategoryID(DishPageQueryDTO dishPageQueryDTO) {
+        List<Dish>list=dishMapper.selectByCategoryID(dishPageQueryDTO.getCategoryId());
+        return list;
     }
 }

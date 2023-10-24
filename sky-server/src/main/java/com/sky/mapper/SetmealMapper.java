@@ -7,6 +7,7 @@ import com.sky.entity.Setmeal;
 import com.sky.entity.SetmealDish;
 import com.sky.enumeration.OperationType;
 import com.sky.vo.SetmealVO;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,33 @@ public interface SetmealMapper {
     @Select("select * from setmeal where id=#{id}")
     Setmeal selectSetmealById(Long id);
 
-    @Select("select d.status from setmeal_dish sd,dish d where sd.dish_id=d.id and sd.setmeal_id=#{id};")
-    List<Integer> selectSetmealOfDish(Long id);
+//    @Select("select d.status from setmeal_dish sd,dish d where sd.dish_id=d.id and sd.setmeal_id=#{id};")
+//    List<Integer> selectSetmealOfDish(Long id);
+
+    /**
+     * 批量删除套餐
+     * @param ids
+     */
+    void deleteBatch(List<Long> ids);
+
+    /**
+     * 根据套餐id删除菜品套餐关系
+     * @param id
+     */
+    @Delete("delete from setmeal_dish where setmeal_id=#{id}")
+    void deleteDishOfSetmeal(Long id);
+
+    /**
+     * 修改套餐
+     * @param setmeal
+     */
+    void update(Setmeal setmeal);
+
+    /**
+     * 根据id获取菜品套餐关系
+     * @param id
+     * @return
+     */
+    @Select("select * from setmeal_dish where setmeal_id=#{id}")
+    List<SetmealDish> selectDishOfSetmealById(Long id);
 }
