@@ -33,6 +33,14 @@ public class SetmealController {
         return Result.success();
     }
 
+    @PostMapping("/status/{status}")
+    @ApiOperation("修改套餐状态")
+    public Result updateStatus(@PathVariable Integer status,@RequestParam Long id){
+        setmealService.updateStatus(status,id);
+        return Result.success();
+    }
+
+
     @GetMapping("/page")
     @ApiOperation("套餐分页查询")
     public Result<PageResult> page(SetmealPageQueryDTO setmealPageQueryDTO)

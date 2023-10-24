@@ -146,4 +146,13 @@ public class SetmealServiceImpl implements SetmealService {
 
         return setmealVO;
     }
+
+
+    @Override
+    public void updateStatus(Integer status, Long id) {
+        Setmeal setmeal=new Setmeal();
+        setmeal.setStatus(status);
+        setmeal.setId(id);
+        setmealMapper.update(setmeal);
+    }
 }
