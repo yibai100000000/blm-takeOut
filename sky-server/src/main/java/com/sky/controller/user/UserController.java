@@ -33,6 +33,8 @@ public class UserController {
     @ApiOperation("微信用户登录")
     public Result<UserLoginVO> login(@RequestBody UserLoginDTO userLoginDTO){
 
+        log.info("运行登录方法，code为：{}",userLoginDTO.getCode());
+
         User user=userService.wxLogin(userLoginDTO);
 
         //为微信用户生成jwt令牌
