@@ -16,6 +16,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 菜品管理
@@ -38,6 +39,9 @@ public class DishController {
         log.info("新增菜品{}",dishDTO.toString());
         dishService.saveWithFlavor(dishDTO);
 
+        //清理菜品缓存
+        String key="dish_id" + dishDTO.getCategoryId();
+        cleanCache(key);
         return Result.success();
     }
 
@@ -55,6 +59,10 @@ public class DishController {
     public Result delete(@RequestParam List<Long> ids){
         log.info("菜品删除{}",ids);
         dishService.deleteBatch(ids);
+
+        //清除所有缓存
+        cleanCache("dish_*");
+
         return Result.success();
     }
 
@@ -71,14 +79,22 @@ public class DishController {
     public Result updateDish(@RequestBody DishDTO dishDTO){
         log.info("修改的菜品为：{}",dishDTO);
         dishService.updateDish(dishDTO);
+
+        //清除所有缓存
+        cleanCache("dish_*");
+
         return Result.success();
     }
 
     @PostMapping("/status/{status}")
-    @ApiOperation("套餐起售停售")
+    @ApiOperation("菜品起售停售")
     public Result updateDishStatus(@PathVariable Integer status,@RequestParam Long id){
         log.info(" "+status+" "+id);
         dishService.updateStatus(status,id);
+
+        //清除所有缓存
+        cleanCache("dish_*");
+
         return Result.success();
     }
 
@@ -89,5 +105,9 @@ public class DishController {
         return Result.success(list);
     }
 
-
+    //清理缓存
+    private void cleanCache(String pattern){
+        Set keys=redisTemplate.keys(pattern);
+        redisTemplate.delete(keys);
+    }
 }
