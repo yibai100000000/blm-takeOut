@@ -44,7 +44,7 @@ sky:
     admin-token-name: token
 
     user-secret-key: treep0
-    user-ttl: 7200000
+    user-ttl: 400000000
     user-token-name: authentication
   alioss:
     #springboot框架能自动将这种命名方式与驼峰命名方式进行转换赋值
