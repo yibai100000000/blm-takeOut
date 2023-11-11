@@ -6,6 +6,8 @@ import com.sky.entity.Orders;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 @Mapper
 public interface OrderMapper {
 
@@ -42,4 +44,11 @@ public interface OrderMapper {
      */
     @Select("select * from orders where id=#{id}")
     Orders selectById(Long id);
+
+    /**
+     * 查询所有订单的状态
+     * @return
+     */
+    @Select("select count(id) from orders where status = #{status}")
+    Integer selectStatus(Integer status);
 }
