@@ -76,8 +76,8 @@ public class OrderServiceImpl implements OrderService {
         orders.setOrderTime(LocalDateTime.now());
         orders.setUserId(userId);
         orders.setPhone(addressBook.getPhone());
-        orders.setStatus(Orders.UN_PAID);
-        orders.setPayStatus(Orders.PENDING_PAYMENT);
+        orders.setStatus(Orders.PENDING_PAYMENT);
+        orders.setPayStatus(Orders.UN_PAID);
         orders.setConsignee(addressBook.getConsignee());
         orders.setNumber(String.valueOf(System.currentTimeMillis()));
 
@@ -314,7 +314,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    //TODO id丢失
     public void delivery(Long id) {
 
 
@@ -328,7 +327,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         Orders orders=new Orders();
-        orders.setId(orders.getId());
+        orders.setId(ordersDB.getId());
         orders.setStatus(Orders.DELIVERY_IN_PROGRESS);
 
         //这里更新并不会影响原数据，而且优化了sql语句
