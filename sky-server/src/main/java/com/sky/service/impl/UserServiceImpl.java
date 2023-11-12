@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
         }
 
         //判断当前用户是否为新用户
-        User user = userMapper.getUserById(userLoginDTO.getCode());
+        User user = userMapper.getUserById(openid);
 
         //如果是新用户，注册
         if (user==null){
