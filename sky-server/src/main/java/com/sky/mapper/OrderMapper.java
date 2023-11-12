@@ -1,6 +1,7 @@
 package com.sky.mapper;
 
 import com.github.pagehelper.Page;
+import com.sky.dto.GoodsSalesDTO;
 import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.entity.Orders;
 import org.apache.ibatis.annotations.Mapper;
@@ -8,6 +9,7 @@ import org.apache.ibatis.annotations.Select;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface OrderMapper {
@@ -61,4 +63,26 @@ public interface OrderMapper {
      */
     @Select("SELECT * from orders where status=#{unPaid} and order_time<#{outTime}")
     List<Orders> selectByTimeAndStatus(Integer unPaid, LocalDateTime outTime);
+
+    /**
+     * 条件查询每日营业额
+     * @param map
+     * @return
+     */
+    Double getTurnoverSum(Map map);
+
+    /**
+     * 条件查询订单数量
+     * @param map
+     * @return
+     */
+    Integer countByMap(Map map);
+
+    /**
+     * 统计指定时间内的销量top10
+     * @param begin
+     * @param end
+     * @return
+     */
+    List<GoodsSalesDTO> getSalesTop(LocalDateTime begin,LocalDateTime end);
 }
